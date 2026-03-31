@@ -1,0 +1,21 @@
+from django.templatetags.static import static
+from django.utils.html import format_html
+from wagtail import hooks
+
+
+@hooks.register("insert_global_admin_css", order=100)
+def global_admin_css(): 
+    """Add global CSS to the Wagtail admin."""
+    return format_html(
+        '<link rel="stylesheet" href="{}">',
+        static("css/custom.css"),
+    )
+
+
+@hooks.register("insert_global_admin_js", order=100)
+def global_admin_js():
+    """Add global JavaScript to the Wagtail admin."""
+    return format_html(
+        '<script src="{}"></script>',
+        static("js/custom.js"),
+    )

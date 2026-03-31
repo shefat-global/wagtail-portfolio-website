@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+
+
+{% block content %}
+
+    {% image self.banner_image fill-400x400 as banner %}
+    <img src="{{ banner.url }}" />
+
+    <div class="container mt-5 mb-5">
+        <div class="text-center">
+            <h1>
+                {% if self.custom_title %}
+                    {{ self.custom_title }}
+                {% else %}
+                    {{ self.title }}
+                {% endif %}
+            </h1>
+                {% if self.subtitle %} {{ self.subtitle }} {% endif %}
+        </div>
+        <ul>
+            {% for iter in self.blog_authors.all %}
+                <li>                 
+                    {% image iter.author.image fill-50x50 as img %}
+                    <img src="{{ img.url }}" alt="{{ iter.author.name }}" /> 
+                    <br/>                    
+                    {{ iter.author.name }}   
+                    {% if iter.author.website %}    
+                        <a href="{{ iter.author.website }}"> 
+                            (Website)
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+   
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">              
+                <iframe width="560" height="315" src="https://www.youtube.com/embed/{{ self.youtube_video_id }}" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+
+    <h2>Categories<h2>
+    <ul>
+        {% for cat in self.categories.all %}
+        <a href="{{ self.get_parent.url }}?category={{ cat.slug }}">
+            <li>{{ cat.name }}</li>
+        </a>
+        {%endfor%}
+    </ul>
+
+    <div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                   {% for block in page.content %}
+                        {% include_block block %}
+                    {% endfor %}
+            </div>
+        </div>
+    </div>  
+  
+
+{% endblock %}

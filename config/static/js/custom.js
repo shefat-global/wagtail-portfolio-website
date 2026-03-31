@@ -1,0 +1,1 @@
+console.log("Hello world from wagtail custom js file")

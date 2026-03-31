@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% load wagtailcore_tags wagtailimages_tags %}
+
+
+
+{% block content %}
+
+    {% image self.blog_image fill-400x400 as banner %}
+    <img src="{{ banner.url }}" />
+
+    <h1>Tags: </h1>
+    {% for tag in page.tags.all %}
+        <a href="{% pageurl page.get_parent %}?tag={{ tag.slug }}">
+            {{ tag }}
+        </a>
+    {% empty %}
+        <p>No tags.</p>
+    {% endfor %}
+
+    <div class="container mt-5 mb-5">
+        <div class="text-center">
+            <h1>
+                {% if self.custom_title %}
+                    {{ self.custom_title }}
+                {% else %}
+                    {{ self.title }}
+                {% endif %}
+            </h1>
+                {% if self.subtitle %} {{ self.subtitle }} {% endif %}
+        </div>
+        <ul>
+            {% for iter in self.blog_authors.all %}
+                <li>                 
+                    {% image iter.author.image fill-50x50 as img %}
+                    <img src="{{ img.url }}" alt="{{ iter.author.name }}" /> 
+                    <br/>                    
+                    {{ iter.author.name }}   
+                    {% if iter.author.website %}    
+                        <a href="{{ iter.author.website }}"> 
+                            (Website)
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% if self.intro_image %}
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 offset-lg-2">
+                    {% image self.intro_image fill-1400x400 as intro_img %}
+                    <img src="{{ intro_img.url }}" alt="{{ intro_img.alt }}" />
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <h2>Categories<h2>
+    <ul>
+        {% for cat in self.categories.all %}
+        <a href="{{ self.get_parent.url }}?category={{ cat.slug }}">
+            <li>{{ cat.name }}</li>
+        </a>
+        {%endfor%}
+    </ul>
+
+    <div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8 offset-lg-2">
+                   {% for block in page.content %}
+                        {% include_block block %}
+                    {% endfor %}
+            </div>
+        </div>
+    </div>  
+  
+
+{% endblock %}
