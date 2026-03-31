@@ -1,0 +1,21 @@
+from django.db import models
+
+from wagtail.admin.panels import FieldPanel, MultiFieldPanel
+from wagtail.contrib.settings.models import BaseSiteSetting, register_setting
+
+@register_setting
+# Create your models here.
+class SocialMediaSettings(BaseSiteSetting):
+    """Social media settins for our custom website."""
+
+    facebook = models.URLField(blank=True, null=True, help_text="Facebook URL")
+    twitter = models.URLField(blank=True, null=True, help_text="Twitter URL")
+    youtube = models.URLField(blank=True, null=True, help_text="youtube URL")
+
+    panels = [
+        MultiFieldPanel([
+            FieldPanel("facebook"),
+            FieldPanel("twitter"),
+            FieldPanel("youtube"),
+        ], heading="Social Media Settings")
+    ]
